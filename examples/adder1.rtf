@@ -1,0 +1,63 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf820
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww28600\viewh15280\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 module
+\b0  Add\
+	
+\b lang
+\b0  Java\
+	
+\b file
+\b0  Impl1.java\
+	
+\b contains
+\b0  int Impl1.add(int a, int b)\
+	
+\b contains
+\b0  void Impl1.main(String[] args)\
+\
+
+\b component
+\b0  Adder\
+	
+\b function
+\b0  Impl1.add 
+\b in
+\b0  module Add\
+	
+\b provides
+\b0  add 
+\b by
+\b0  Add.Impl1.add\
+\
+
+\b component
+\b0  Client\
+	
+\b function
+\b0  Impl1.main 
+\b in
+\b0  module Add\
+	
+\b requires
+\b0  int add(int, int)\
+\
+
+\b architecture
+\b0  System\
+	
+\b component
+\b0  Adder adder\
+	
+\b component
+\b0  Client client\
+	
+\b connect
+\b0  client.add 
+\b to
+\b0  adder.add\
+}
