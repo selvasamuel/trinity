@@ -5,7 +5,37 @@
 \margl1440\margr1440\vieww28600\viewh15300\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f0\b\fs24 \cf0 module
+\f0\b\fs24 \cf0 type
+\b0  Stream<E>\
+	String topicName\
+	
+\b check
+\b0  
+\b provides
+\b0 \
+		rospy.init_node\
+		
+\b then
+\b0  rospy.Publisher(topicName, E, \'85)\
+	
+\b check
+\b0  
+\b requires
+\b0 \
+		rospy.init_node\
+		
+\b then
+\b0  raspy.Subscriber(topicName, E, \'85)\
+	
+\b check
+\b0  
+\b connect
+\b0 \
+		provider.topicName = requirer.topicName\
+\
+// Static view
+\b \
+module
 \b0  Bump\
 	
 \b lang
@@ -15,4 +45,95 @@
 \b0  bump.py\
 	
 \b provides
-\b0  bumpEvents(topicName: \'93topic1\'94): Stream<BumperEvent>}
+\b0  bumpEvents(topicName: \'93topic1\'94): Stream<BumperEvent>\
+\
+
+\b module
+\b0  Mediator\
+	
+\b lang
+\b0  Python\
+	
+\b file
+\b0  mediator.py\
+	
+\b requires
+\b0  bumpEvents(topicName: \'93topic1\'94): Stream<BumperEvent>\
+	
+\b provides
+\b0  velCmds(topicName: \'93topic2\'94): Stream<Twist>\
+\
+
+\b module
+\b0  Motor\
+	
+\b lang
+\b0  Python\
+	
+\b file
+\b0  motor.py\
+	
+\b requires
+\b0  velCmds(topicName: \'93topic2\'94): Stream<Twist>\
+\
+// Dynamic view\
+
+\b component
+\b0  Bump\
+	
+\b module
+\b0  Bump\
+	
+\b provides
+\b0  bumpEvents 
+\b by
+\b0  Bump.bumpEvents\
+\
+
+\b component
+\b0  Mediator\
+	
+\b module
+\b0  Mediator\
+	
+\b provides
+\b0  velCmds 
+\b by
+\b0  Mediator.velCmds\
+	
+\b requires
+\b0  bumpEvents: Stream<BumperEvent>\
+\
+
+\b component
+\b0  Motor\
+	
+\b module
+\b0  Motor\
+	
+\b requires
+\b0  velCmds: Stream<Twist>\
+\
+
+\b architecture
+\b0  System\
+	
+\b component
+\b0  Bump bump\
+	
+\b component
+\b0  Mediator mediator\
+	
+\b component
+\b0  Motor motor\
+	
+\b connect
+\b0  mediator.bumpEvents 
+\b to
+\b0  bump.bumpEvents\
+	
+\b connect
+\b0  motor.velCmds 
+\b to
+\b0  mediator.velCmds\
+}
